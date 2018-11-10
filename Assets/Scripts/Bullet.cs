@@ -44,7 +44,7 @@ public class Bullet : Unit
         
         if (collision.tag == "shield")
         {
-            Debug.Log(collision.tag);
+           // Debug.Log(collision.tag);
             Destroy(gameObject);
         }
         else

@@ -17,7 +17,7 @@ public class PlayerController : Unit
 
     Vector3 respawnPos;
 
-    float veryBottom = -10.0F;
+    float veryBottom = -5.0F;
 
     //  public Enemy enemy = Enemy.your;
 

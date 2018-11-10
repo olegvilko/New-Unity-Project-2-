@@ -14,7 +14,7 @@ public class Monster : Unit
     //}
 
     protected GameObject player;
-    protected Type type;
+   // protected Type type;
 
     int direction=1;
 
@@ -39,14 +39,28 @@ public class Monster : Unit
 
     }
 
-    protected virtual void OnTriggerEnter2D(Collider2D collider)
+    protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
-        Bullet bullet = collider.GetComponent<Bullet>();
+        //Bullet bullet = collider.GetComponent<Bullet>();
 
-        if (bullet)
+        //if (bullet)
+        //{
+        //    //Destroy(gameObject);
+        //    ReceiveDamage();
+        //}
+
+        Unit unit = collision.GetComponent<Unit>();
+
+        if (unit && unit is PlayerController)
         {
-            //Destroy(gameObject);
-            ReceiveDamage();
+            if (Mathf.Abs(unit.transform.position.x - transform.position.x) < 0.1F)
+            {
+                ReceiveDamage();
+            }
+            else
+            {
+                unit.ReceiveDamage();
+            }
         }
     }
 

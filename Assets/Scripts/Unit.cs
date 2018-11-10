@@ -6,7 +6,7 @@ public class Unit : MonoBehaviour {
 
     private GameObject heart;
 
-    private Type type;
+    protected Type type;
     private MonsterLivesBar monsterLivesBar;
     //protected GameObject player;
 

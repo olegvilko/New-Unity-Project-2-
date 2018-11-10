@@ -162,7 +162,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemy: 1
-  lives: 2
+  lives: 3
   livesMax: 1
   speed: 1
   boss: 0

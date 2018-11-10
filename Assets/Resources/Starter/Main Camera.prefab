@@ -113,4 +113,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8963f0fbcb5ccfd47a55bce4a211d252, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
+  posY: 1
+  posZ: -10

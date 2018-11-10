@@ -13,13 +13,13 @@ public class ShootableMonster : Monster {
 
     private Bullet bullet;
 
-    private GameObject player;
+  //  private GameObject player;
 
     protected override void Awake()
-    {
+    {   // это надо переделать
         player = GameObject.FindGameObjectWithTag("Player");
 
-        bullet = Resources.Load<Bullet>("Bullet");
+        bullet = Resources.Load<Bullet>("items/Bullet");
     }
 
     protected override void Start()

@@ -99,6 +99,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeDestroy: 0.1
+  scale: 0
+  speed: 4
 --- !u!114 &114335768115917250
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -111,6 +113,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemy: 1
+  lives: 1
+  livesMax: 0
+  speed: 1
+  boss: 0
+  scale: 1
 --- !u!212 &212754183673972494
 SpriteRenderer:
   m_ObjectHideFlags: 1

@@ -39,22 +39,22 @@ public class MoveableMonster : Monster
 
 
 
-    protected override void OnTriggerEnter2D(Collider2D collision)
-    {
-        Unit unit = collision.GetComponent<Unit>();
+    //protected override void OnTriggerEnter2D(Collider2D collision)
+    //{
+    //    Unit unit = collision.GetComponent<Unit>();
 
-        if (unit && unit is PlayerController)
-        {
-            if (Mathf.Abs(unit.transform.position.x - transform.position.x) < 0.1F)
-            {
-                ReceiveDamage();
-            }
-            else
-            {
-                unit.ReceiveDamage();
-            }
-        }
-    }
+    //    if (unit && unit is PlayerController)
+    //    {
+    //        if (Mathf.Abs(unit.transform.position.x - transform.position.x) < 0.1F)
+    //        {
+    //            ReceiveDamage();
+    //        }
+    //        else
+    //        {
+    //            unit.ReceiveDamage();
+    //        }
+    //    }
+    //}
 
     // Use this for initialization
 
