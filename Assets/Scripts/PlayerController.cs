@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,16 +9,25 @@ public class PlayerController : Unit
  //   [SerializeField]
     public float speed = 3f;
     public float jump = 4f;
-    public int lives = 5;
+    private int lives = 7;
     public float speedMount=0.001F;
 
-    public Enemy enemy = Enemy.your;
+   // [SerializeField]
+    private GameObject respawn;
+
+    Vector3 respawnPos;
+
+    float veryBottom = -10.0F;
+
+    //  public Enemy enemy = Enemy.your;
 
     public BackgroundHelper backgroundHelper;
 
     public RawImage rawImage;
 
-    public Collider2D colliderObstracle;
+    private bool animationStatus;
+
+    //  public Collider2D colliderObstracle;
 
     public GameObject shield;
 
@@ -29,11 +39,12 @@ public class PlayerController : Unit
     {
         get { return lives; }
         set {
-            if(value<5) lives = value;
+            if(value<8) lives = value;
             livesBar.Refresh();
         }
     }
     private LivesBar livesBar;
+ //   private MonsterLivesBar monsterLivesBar;
 
   //  [SerializeField]
   //  private GameObject bullet;
@@ -58,6 +69,14 @@ public class PlayerController : Unit
 
     private void Awake()
     {
+        //GameObject panel2;
+        //panel2=GameObject.Find("UpPanel");
+        //panel2.gameObject.SetActive(true);
+
+        respawn = GameObject.Find("Respawn");
+        //  transform.position = respawn.transform.position;
+        respawnPos = transform.position;
+
         type = GetComponent<Type>();
         type.enemy = Enemy.your;
 
@@ -65,10 +84,11 @@ public class PlayerController : Unit
         livesBar = FindObjectOfType<LivesBar>();
         sprite = GetComponentInChildren<SpriteRenderer>();
         rigidbody = GetComponent<Rigidbody2D>();
-   //     bullet = Resources.Load<Bullet>("Bullet");
+        //     bullet = Resources.Load<Bullet>("Bullet");
+      //  monsterLivesBar = FindObjectOfType<MonsterLivesBar>();
     }
 
-    void Start()
+        void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
@@ -76,51 +96,76 @@ public class PlayerController : Unit
 
     void Update()
     {
-        if(isGrounded && !(Input.GetButton("Fire1")))
-            State = CharState.Idle;
-
-        if (Input.GetButton("Horizontal"))
-            Run();
-
-        if (Input.GetButtonDown("Jump") && isGrounded)
+     //   if (animationStatus == false)
         {
-               Jump();
-        }
 
-        if (Input.GetButton("Fire2"))
-        {
-            shield.SetActive(true);
-        }
-        else
-        {
-            shield.SetActive(false);
-
-            if (Input.GetButton("Fire1"))
+            if (Input.GetButton("Fire2"))
             {
-                 Shoot();
+               
+                    State = CharState.Shield;
+
+                 shield.SetActive(true);
+            }
+            else
+            {
+                shield.SetActive(false);
+
+
+                if (isGrounded && !(Input.GetButton("Fire1")))
+                {
+                //    if (animationStatus == false)
+                    {
+                        State = CharState.Idle;
+                    }
+                }
+
+
+                if (Input.GetButton("Horizontal"))
+                    Run();
+
+                if (Input.GetButtonDown("Jump") && isGrounded)
+                {
+                    Jump();
+                }
+
+                if (Input.GetButton("Fire1"))
+                {
+                    if (animationStatus == false)
+                    {
+                        Shoot();
+                    }
+                }
             }
         }
-        
-          //  Shield();
+        //  Shield();
+
+        CheckVeryBottom();
+    }
+
+    private void CheckVeryBottom()
+    {
+        if (transform.position.y < veryBottom)
+            ReceiveDamage();
+
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         //Unit unit = collision.gameObject.GetComponent<Unit>();
-        Type typeCollision = collision.GetComponent<Type>();
-        if (type.enemy != typeCollision.enemy)
-        {
-          //  ReceiveDamage();
-        }
+        //Type typeCollision = collision.GetComponent<Type>();
+        //if (type.enemy != typeCollision.enemy)
+        //{
+        //  //  ReceiveDamage();
+        //}
 
        
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        tag = collision.gameObject.tag;
+       // tag = collision.gameObject.tag;
   //      Debug.Log(collision.gameObject.name);
-        if (tag=="vertical")
+        if (collision.gameObject.tag == "vertical")
         {
             rb.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation;
             
@@ -132,27 +177,55 @@ public class PlayerController : Unit
         }
     }
 
-    private void Shield()
+    //void AnimationStart()
+    //{
+    //    animationStatus = true;
+    //}
+
+    //void AnimationStop()
+    //{
+    //    animationStatus = false;
+    //}
+
+    void Log()
     {
-        if (Input.GetButton("Fire2"))
-        {
-            shield.SetActive(true);
-        }
-        else
-        {
-            shield.SetActive(false);
-        }
+        Debug.Log("Test");
+    }
+
+    void Shield()
+    {
+        shield.SetActive(true);
+      //  Log();
+        //if (Input.GetButton("Fire2"))
+        //{
+        //    shield.SetActive(true);
+        //}
+        //else
+        //{
+        //    shield.SetActive(false);
+        //}
     }
 
     private void Shoot()
     {
-        
-        //  newBullet.transform.localScale=new Vector3(0.26F,1,1);
-
+        StartCoroutine(AttackCoroutine());
         State = CharState.Attack;
+        animationStatus = true;
+        Attack();
     }
 
-    void Attack()
+    IEnumerator AttackCoroutine()
+    {
+        yield return new WaitForSeconds(0.2F);
+        // Thread.Sleep(100);
+        //yield return new WaitForSeconds(3f);
+        //yield WaitForSeconds(0.1);
+    //    Log();
+        animationStatus = false;
+        yield return null;
+    }
+
+        void Attack()
     {
         Vector3 position = transform.position;
        // var rotation = (sprite.flipX ? -1 : 1);
@@ -167,8 +240,9 @@ public class PlayerController : Unit
         newBullet.Parent = gameObject;
 
         newBullet.transform.localScale = new Vector3(scale*-1, 1, 1);
-
-        
+        newBullet.scale = -0.02F*scale;
+        newBullet.speed = 4F;
+        newBullet.timeDestroy = 0.1F;
     }
 
     private void FixedUpdate()
@@ -233,13 +307,20 @@ public class PlayerController : Unit
         Idle,
         Run,
         Jump,
-        Attack
+        Attack,
+        Shield
     }
 
     public override void ReceiveDamage()
     {
         Lives--;
 
+        if (Lives <= 0)
+        {
+            Lives = 7;
+            //   transform.position = respawn.transform.position;
+            transform.position = respawnPos;
+        }
      //   Debug.Log(lives);
 
         rigidbody.velocity = Vector3.zero;

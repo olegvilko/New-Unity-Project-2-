@@ -5,7 +5,7 @@ using UnityEngine;
 public class LivesBar : MonoBehaviour
 {
 
-    private Transform[] hearts = new Transform[5];
+    private Transform[] hearts = new Transform[7];
 
     private PlayerController playerController;
 

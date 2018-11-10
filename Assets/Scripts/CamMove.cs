@@ -4,14 +4,18 @@ using UnityEngine;
 
 public class CamMove : MonoBehaviour {
 
-    public GameObject player;
-	// Use this for initialization
+    [SerializeField]
+    float posY = 1;
+    [SerializeField]
+    float posZ = -10.0F;
+
+    private GameObject player;
+
 	void Start () {
-		
-	}
+        player = GameObject.FindGameObjectWithTag("Player");
+    }
 	
-	// Update is called once per frame
 	void Update () {
-        transform.position = new Vector3(player.transform.position.x,player.transform.position.y+1,-10f);
+        transform.position = new Vector3(player.transform.position.x,player.transform.position.y+posY,posZ);
 	}
 }

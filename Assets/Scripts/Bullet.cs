@@ -12,14 +12,15 @@ public class Bullet : Unit
 
     public float timeDestroy = 0.1F;
 
+    public float scale = 0;
+
     public Color color {
         set { sprite.color = value; }
     }
 
-    private float speed =4.0F;
+    public float speed =4.0F;
     private SpriteRenderer sprite;
     private Vector3 direction;
-
 
     private void Awake()
     {
@@ -35,6 +36,7 @@ public class Bullet : Unit
     private void Update()
     {
         transform.position = Vector3.MoveTowards(transform.position, transform.position + direction, speed * Time.deltaTime);
+        transform.localScale =new Vector3(transform.localScale.x+scale,transform.localScale.y+Mathf.Abs(scale),transform.localScale.z+scale);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

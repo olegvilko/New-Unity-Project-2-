@@ -12,19 +12,19 @@ public class MoveableMonster : Monster
 
     private SpriteRenderer sprite;
 
-    public CheckPlatform checkPlatform;
+  //  public CheckPlatform checkPlatform;
 
     // private Bullet bullet;
 
     private Vector3 direction;
 
-    protected override void Awake()
-    {
-        sprite = GetComponentInChildren<SpriteRenderer>();
+    //protected override void Awake()
+    //{
+    //    sprite = GetComponentInChildren<SpriteRenderer>();
 
-        checkPlatform = GetComponentInChildren<CheckPlatform>();
-        //  bullet = Resources.Load<Bullet>("Bullet");
-    }
+    ////    checkPlatform = GetComponentInChildren<CheckPlatform>();
+    //    //  bullet = Resources.Load<Bullet>("Bullet");
+    //}
 
     protected override void Start()
     {
@@ -36,6 +36,8 @@ public class MoveableMonster : Monster
     {
         Move();
     }
+
+
 
     protected override void OnTriggerEnter2D(Collider2D collision)
     {
@@ -67,7 +69,7 @@ public class MoveableMonster : Monster
             direction *= -1.0F;
         }
 
-        colliders = Physics2D.OverlapCircleAll(transform.position + transform.up * -1F + transform.right * direction.x * 0.2F, 0.01F);
+        colliders = Physics2D.OverlapCircleAll(transform.position + transform.up * -0.2F + transform.right * direction.x * 0.2F, 0.01F);
         if (colliders.Length == 0)
         {
             direction *= -1.0F;
